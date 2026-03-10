@@ -45,7 +45,7 @@ export function CTA() {
           {/* Tags */}
           {ctaConfig.tags.length > 0 && (
             <div className={cn(
-              'flex flex-wrap justify-center gap-3 mb-8 transition-all duration-[800ms]',
+              'flex flex-wrap justify-center gap-3 mb-8 transition-all duration-&lsqb;800ms&rsqb;',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}>
               {ctaConfig.tags.map((tag, index) => (
@@ -60,7 +60,7 @@ export function CTA() {
           {/* Heading */}
           {ctaConfig.heading && (
             <h2 className={cn(
-              'text-3xl lg:text-5xl font-semibold text-white leading-tight transition-all duration-[800ms]',
+              'text-3xl lg:text-5xl font-semibold text-white leading-tight transition-all duration-&lsqb;800ms&rsqb;',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             )}
               style={{ transitionDelay: '100ms' }}>
@@ -71,7 +71,7 @@ export function CTA() {
           {/* Description */}
           {ctaConfig.description && (
             <p className={cn(
-              'mt-6 text-lg text-white/70 max-w-xl mx-auto transition-all duration-[800ms]',
+              'mt-6 text-lg text-white/70 max-w-xl mx-auto transition-all duration-&lsqb;800ms&rsqb;',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             )}
               style={{ transitionDelay: '200ms' }}>
@@ -81,7 +81,7 @@ export function CTA() {
 
           {/* Buttons */}
           <div className={cn(
-            'flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 transition-all duration-[800ms]',
+            'flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 transition-all duration-&lsqb;800ms&rsqb;',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           )}
             style={{ transitionDelay: '300ms' }}>

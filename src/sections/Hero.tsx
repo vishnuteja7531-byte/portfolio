@@ -31,7 +31,7 @@ export function Hero() {
       {/* Background Image - FULL SCREEN */}
       <div
         className={cn(
-          'absolute inset-0 transition-opacity duration-[1800ms] z-0',
+          'absolute inset-0 transition-opacity duration-&lsqb;1800ms&rsqb; z-0',
           isLoaded && imageLoaded ? 'opacity-100' : 'opacity-0'
         )}
       >
@@ -57,7 +57,7 @@ export function Hero() {
       {/* Specialization Note */}
       <div
         className={cn(
-          'absolute top-[42%] right-[5vw] z-20 text-right max-w-[18vw] transition-all duration-[1200ms] ease-out-quart',
+          'absolute top-[42%] right-[5vw] z-20 text-right max-w-[18vw] transition-all duration-&lsqb;1200ms&rsqb; ease-out-quart',
           isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         )}
         style={{ transitionDelay: '500ms' }}
@@ -80,7 +80,7 @@ export function Hero() {
       {/* Left Text Block (I AM + VISHNU) */}
       <div
         className={cn(
-          'absolute bottom-0 left-[4vw] z-30 transition-all duration-[1200ms] ease-out-quart flex flex-col',
+          'absolute bottom-0 left-[4vw] z-30 transition-all duration-&lsqb;1200ms&rsqb; ease-out-quart flex flex-col',
           isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'
         )}
         style={{ transitionDelay: '700ms' }}
@@ -112,7 +112,7 @@ export function Hero() {
       {/* Scroll Indicator */}
       <div
         className={cn(
-          'absolute bottom-[2vw] left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-[0.6vw] transition-all duration-[1200ms] ease-out-quart',
+          'absolute bottom-[2vw] left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-[0.6vw] transition-all duration-&lsqb;1200ms&rsqb; ease-out-quart',
           isLoaded ? 'opacity-100' : 'opacity-0'
         )}
         style={{ transitionDelay: '1000ms' }}
@@ -131,7 +131,7 @@ export function Hero() {
       {/* Right Stacking Block (Role) */}
       <div
         className={cn(
-          'absolute bottom-[4vw] right-[4vw] z-30 text-right transition-all duration-[1200ms] ease-out-quart flex flex-col',
+          'absolute bottom-[4vw] right-[4vw] z-30 text-right transition-all duration-&lsqb;1200ms&rsqb; ease-out-quart flex flex-col',
           isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         )}
         style={{ transitionDelay: '900ms' }}

@@ -32,7 +32,7 @@ function FeatureBlock({ image, tags, title, description, isReversed }: FeatureBl
         <img
           src={image}
           alt={title}
-          className="w-full h-[50vw] md:h-[40vw] lg:h-[22vw] object-contain mix-blend-screen transition-all duration-[600ms] ease-out hover:scale-[1.03]"
+          className="w-full h-[50vw] md:h-[40vw] lg:h-[22vw] object-contain mix-blend-screen transition-all duration-&lsqb;600ms&rsqb; ease-out hover:scale-[1.03]"
         />
       </motion.div>
 

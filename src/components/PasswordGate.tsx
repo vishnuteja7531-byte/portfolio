@@ -32,7 +32,7 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
     }, [])
 
     const handleSubmit = () => {
-        if (password === 'VortexiumX7') {
+        if (password === 'aionarchsx7') {
             sessionStorage.setItem('unlocked', 'true')
             setUnlocked(true)
         } else {

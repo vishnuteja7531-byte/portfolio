@@ -3,6 +3,7 @@ import { Hero } from '@/sections/Hero';
 import { Soul } from '@/sections/Soul';
 import { About } from '@/sections/About';
 import { Services } from '@/sections/Services';
+import Team from '@/sections/Team';
 import { ClosingHero } from '@/sections/ClosingHero';
 import { CTA } from '@/sections/CTA';
 import { Footer } from '@/sections/Footer';
@@ -25,6 +26,7 @@ function App() {
             <About />
             <Soul />
             <Services />
+            <Team />
             <ClosingHero />
             <CTA />
           </main>

@@ -40,11 +40,16 @@ const team = [
 ];
 
 const figureVariants: Variants = {
-    hidden: { opacity: 0, y: 45 },
+    hidden: { opacity: 0, y: 50 },
     visible: (i: number) => ({
-        opacity: 1, y: 0,
-        transition: { delay: i * 0.12, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as Easing }
-    })
+        opacity: 1,
+        y: 0,
+        transition: {
+            delay: i * 0.13,
+            duration: 0.75,
+            ease: [0.25, 0.46, 0.45, 0.94] as Easing,
+        },
+    }),
 };
 
 export default function Team() {
@@ -55,13 +60,15 @@ export default function Team() {
     return (
         <section ref={ref} style={{ background: '#f0eeea', padding: '6vw 4vw 4vw', overflow: 'hidden' }}>
 
-            {/* ── PART 1: TOP SPLIT ── */}
-            <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: '5vw' }}>
+            {/* ── PART 1: TOP HERO SPLIT ── */}
+            <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: '8vw' }}>
 
                 {/* LEFT */}
                 <div style={{ flex: '0 0 55%', paddingRight: '4vw' }}>
                     <motion.p
-                        initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ duration: 0.6 }}
+                        initial={{ opacity: 0 }}
+                        animate={inView ? { opacity: 1 } : {}}
+                        transition={{ duration: 0.6 }}
                         style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.65vw', letterSpacing: '0.3em', color: 'rgba(10,10,10,0.4)', margin: '0 0 2vw 0' }}
                     >
                         THE BUILDERS
@@ -88,7 +95,9 @@ export default function Team() {
                     ))}
 
                     <motion.p
-                        initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.55 }}
+                        initial={{ opacity: 0 }}
+                        animate={inView ? { opacity: 1 } : {}}
+                        transition={{ delay: 0.55 }}
                         style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.82vw', color: 'rgba(10,10,10,0.55)', lineHeight: 1.75, maxWidth: '36vw', margin: '2.5vw 0 0 0' }}
                     >
                         We are a stealth-mode collective of builders, researchers, and designers
@@ -97,12 +106,20 @@ export default function Team() {
                     </motion.p>
 
                     <motion.button
-                        initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.7 }}
+                        initial={{ opacity: 0 }}
+                        animate={inView ? { opacity: 1 } : {}}
+                        transition={{ delay: 0.7 }}
                         style={{
-                            marginTop: '2.5vw', fontFamily: 'DM Mono, monospace', fontSize: '0.7vw',
-                            border: '1px solid rgba(10,10,10,0.3)', padding: '0.8vw 2vw',
-                            background: 'transparent', color: '#0a0a0a', cursor: 'pointer',
-                            letterSpacing: '0.1em', transition: 'all 0.25s ease',
+                            marginTop: '2.5vw',
+                            fontFamily: 'DM Mono, monospace',
+                            fontSize: '0.7vw',
+                            border: '1px solid rgba(10,10,10,0.3)',
+                            padding: '0.8vw 2vw',
+                            background: 'transparent',
+                            color: '#0a0a0a',
+                            cursor: 'pointer',
+                            letterSpacing: '0.1em',
+                            transition: 'all 0.25s ease',
                         }}
                         onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#0a0a0a'; (e.currentTarget as HTMLElement).style.color = '#f0eeea' }}
                         onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#0a0a0a' }}
@@ -122,20 +139,36 @@ export default function Team() {
                         transition={{ delay: 0.3, duration: 0.9 }}
                         style={{ position: 'relative', width: '100%', height: '58vw', maxHeight: '680px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}
                     >
-                        <img src="/images/ceo.png" alt="Vishnu" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'bottom center' }} />
+                        <img
+                            src="/images/ceo.png"
+                            alt="Vishnu"
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'bottom center' }}
+                        />
                     </motion.div>
                 </div>
             </div>
 
-            {/* ── DIVIDER ── */}
-            <motion.div
-                initial={{ width: 0 }} animate={inView ? { width: '100%' } : {}}
-                transition={{ duration: 1.1, ease: 'easeInOut', delay: 0.2 }}
-                style={{ height: '1px', background: 'rgba(10,10,10,0.12)', marginBottom: '0' }}
-            />
+            {/* ── PART 2: 4-MEMBER LINEUP ── */}
+            <div style={{ marginBottom: '3vw', textAlign: 'center' }}>
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ delay: 0.1 }}
+                    style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.65vw', color: 'rgba(10,10,10,0.35)', letterSpacing: '0.3em', margin: 0 }}
+                >
+                    THE TEAM
+                </motion.p>
+                <motion.h3
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ delay: 0.2 }}
+                    style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 900, fontSize: '3.5vw', color: '#0a0a0a', margin: '0.8vw 0 0 0' }}
+                >
+                    5 BUILDERS. 3 SYSTEMS. 1 VISION.
+                </motion.h3>
+            </div>
 
-            {/* ── PART 2: 4-MEMBER STRIP ── */}
-            <div style={{ display: 'flex', alignItems: 'flex-end', width: '100%', background: '#f0eeea' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', width: '100%', gap: 0, background: '#f0eeea' }}>
                 {team.map((member, i) => (
                     <motion.div
                         key={member.id}
@@ -150,15 +183,14 @@ export default function Team() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            borderRight: i < team.length - 1 ? '1px solid rgba(10,10,10,0.1)' : 'none',
-                            padding: '0 1.5vw',
-                            opacity: hoveredId && hoveredId !== member.id ? 0.35 : 1,
-                            transition: 'opacity 0.3s ease',
+                            position: 'relative',
+                            opacity: hoveredId && hoveredId !== member.id ? 0.3 : 1,
+                            transition: 'opacity 0.35s ease',
                             cursor: 'default',
                         }}
                     >
                         {/* Figure */}
-                        <div style={{ position: 'relative', width: '100%', height: '46vw', maxHeight: '560px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+                        <div style={{ position: 'relative', width: '100%', height: '55vw', maxHeight: '640px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
                             <img
                                 src={member.image}
                                 alt={member.name}
@@ -167,39 +199,47 @@ export default function Team() {
                                     height: '100%',
                                     objectFit: 'contain',
                                     objectPosition: 'bottom center',
-                                    transform: hoveredId === member.id ? 'scale(1.02)' : 'scale(1)',
+                                    transform: hoveredId === member.id ? 'scale(1.03)' : 'scale(1)',
                                     transformOrigin: 'bottom center',
-                                    transition: 'transform 0.3s ease',
+                                    transition: 'transform 0.4s ease',
                                 }}
                             />
                         </div>
 
-                        {/* Baseline rule */}
-                        <div style={{ width: '100%', height: '1px', background: 'rgba(10,10,10,0.12)' }} />
-
                         {/* Text */}
-                        <div style={{ padding: '1.2vw 0.5vw 2.5vw', textAlign: 'center' }}>
-                            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '1.1vw', fontWeight: 700, color: '#0a0a0a', margin: '0 0 0.3vw', letterSpacing: '0.05em' }}>
+                        <div style={{ textAlign: 'center', padding: '1.5vw 1vw 2vw', maxWidth: '20vw' }}>
+                            <p style={{
+                                fontFamily: 'DM Sans, sans-serif',
+                                fontSize: '1.3vw',
+                                fontWeight: 800,
+                                color: '#0a0a0a',
+                                margin: '0 0 0.3vw',
+                                letterSpacing: '0.06em',
+                                textTransform: 'uppercase'
+                            }}>
                                 {member.name}
                             </p>
-                            <p style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.62vw', color: 'rgba(10,10,10,0.45)', margin: '0 0 0.4vw' }}>
+                            <p style={{
+                                fontFamily: 'DM Mono, monospace',
+                                fontSize: '0.65vw',
+                                color: 'rgba(10,10,10,0.5)',
+                                margin: '0 0 1vw',
+                                letterSpacing: '0.1em',
+                                textTransform: 'uppercase',
+                            }}>
                                 {member.role}
-                            </p>
-                            <p style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.52vw', color: 'rgba(10,10,10,0.28)', margin: '0 0 1.2vw' }}>
-                                {member.stack}
                             </p>
                             <motion.p
                                 initial={{ opacity: 0 }}
                                 animate={inView ? { opacity: 1 } : {}}
-                                transition={{ delay: i * 0.12 + 0.3 }}
+                                transition={{ delay: i * 0.13 + 0.4 }}
                                 style={{
                                     fontFamily: 'DM Mono, monospace',
-                                    fontSize: '0.65vw',
-                                    color: 'rgba(10,10,10,0.5)',
-                                    lineHeight: 1.75,
-                                    maxWidth: '18vw',
-                                    margin: '0 auto',
-                                    fontStyle: 'normal',
+                                    fontSize: '0.68vw',
+                                    color: 'rgba(10,10,10,0.45)',
+                                    lineHeight: 1.8,
+                                    fontStyle: 'italic',
+                                    margin: 0,
                                 }}
                             >
                                 {member.description}
@@ -210,7 +250,7 @@ export default function Team() {
             </div>
 
             {/* ── BOTTOM BAR ── */}
-            <div style={{ borderTop: '1px solid rgba(10,10,10,0.1)', marginTop: '2vw', paddingTop: '1.5vw', display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ borderTop: '1px solid rgba(10,10,10,0.1)', marginTop: '3vw', paddingTop: '1.5vw', display: 'flex', justifyContent: 'space-between' }}>
                 <p style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.6vw', color: 'rgba(10,10,10,0.25)', letterSpacing: '0.15em', margin: 0 }}>
                     ATHERA LABS · STEALTH MODE · 2026
                 </p>
@@ -220,5 +260,5 @@ export default function Team() {
             </div>
 
         </section>
-    )
+    );
 }

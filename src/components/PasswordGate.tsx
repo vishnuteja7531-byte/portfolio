@@ -1,6 +1,5 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PasswordGate({ children }: { children: React.ReactNode }) {
     const [unlocked, setUnlocked] = useState(false);
@@ -9,11 +8,20 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
     const [shake, setShake] = useState(false);
     const [checking, setChecking] = useState(true);
     const [videoEnded, setVideoEnded] = useState(false);
+    const [showTitle, setShowTitle] = useState(false);
+    const [hideTitle, setHideTitle] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         const saved = sessionStorage.getItem('athera_unlocked');
         if (saved === 'true') setUnlocked(true);
         setChecking(false);
+
+        // 8.5s fallback timeout (8s video + 0.5s buffer)
+        const timeout = setTimeout(() => {
+            setVideoEnded(true);
+        }, 8500);
+        return () => clearTimeout(timeout);
     }, []);
 
     const handleSubmit = () => {
@@ -37,17 +45,7 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
     if (unlocked) return <>{children}</>;
 
     return (
-        <div style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 99999,
-            background: '#0a0a0a',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
-        }}>
+        <div style={{ background: '#000000', position: 'fixed', inset: 0, zIndex: 99999 }}>
             <style>{`
                 .gate-input:focus { outline:none; border-color:rgba(255,255,255,0.4) !important; }
                 .gate-input::placeholder { color:rgba(255,255,255,0.2); }
@@ -63,10 +61,18 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
 
             {/* Cinematic Video Background */}
             <video
+                ref={videoRef}
                 autoPlay
                 muted
                 playsInline
                 onEnded={() => setVideoEnded(true)}
+                onTimeUpdate={(e) => {
+                    const t = (e.target as HTMLVideoElement).currentTime
+                    if (t >= 3.5 && !showTitle) {
+                        setShowTitle(true)
+                        setTimeout(() => setHideTitle(true), 1500)
+                    }
+                }}
                 style={{
                     position: 'fixed',
                     top: 0,
@@ -79,6 +85,43 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
             >
                 <source src="/videos/nun-walking.mp4" type="video/mp4" />
             </video>
+
+            {/* Cinematic Title Card */}
+            <AnimatePresence>
+                {showTitle && !hideTitle && (
+                    <motion.div
+                        key="title"
+                        initial={{ opacity: 0, letterSpacing: '0.8em' }}
+                        animate={{ opacity: 1, letterSpacing: '0.15em' }}
+                        exit={{ opacity: 0, letterSpacing: '0.5em' }}
+                        transition={{ duration: 0.6, ease: 'easeOut' }}
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            zIndex: 2,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            pointerEvents: 'none',
+                        }}
+                    >
+                        <p style={{
+                            fontFamily: 'Cormorant Garamond, serif',
+                            fontSize: '7vw',
+                            fontWeight: 300,
+                            fontStyle: 'italic',
+                            color: 'rgba(255,255,255,0.92)',
+                            letterSpacing: '0.15em',
+                            textTransform: 'uppercase',
+                            margin: 0,
+                            textAlign: 'center',
+                            lineHeight: 1,
+                        }}>
+                            She is Coming.
+                        </p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Initial Dark Overlay */}
             <div style={{
@@ -110,14 +153,13 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
                 style={{
                     position: 'fixed',
                     bottom: '6vh',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
+                    left: '0',
+                    right: '0',
                     zIndex: 3,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: '1.5vw',
-                    width: '100%',
                     pointerEvents: videoEnded ? 'all' : 'none',
                 }}
             >

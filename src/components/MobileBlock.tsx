@@ -129,7 +129,7 @@ export default function MobileBlock({ children }: { children: React.ReactNode })
                 animation: 'mfadeUp 0.8s ease 0.7s forwards',
                 opacity: 0,
             }}>
-                ATHERA LABS · 2025 · STEALTH MODE
+                ATHERA LABS · 2026 · STEALTH MODE
             </p>
 
         </div>

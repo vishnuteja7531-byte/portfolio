@@ -1,121 +1,188 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+'use client'
+
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function PasswordGate({ children }: { children: React.ReactNode }) {
-    const [unlocked, setUnlocked] = useState(false);
-    const [input, setInput] = useState('');
-    const [error, setError] = useState(false);
-    const [shake, setShake] = useState(false);
-    const [checking, setChecking] = useState(true);
-    const [videoEnded, setVideoEnded] = useState(false);
-    const [showTitle, setShowTitle] = useState(false);
-    const [hideTitle, setHideTitle] = useState(false);
-    const videoRef = useRef<HTMLVideoElement>(null);
+    const [unlocked, setUnlocked] = useState(false)
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState(false)
+    const [shake, setShake] = useState(false)
+    const [videoEnded, setVideoEnded] = useState(false)
+    const [showTitle, setShowTitle] = useState(false)
+    const [hideTitle, setHideTitle] = useState(false)
+    const [showFinal, setShowFinal] = useState(false)
 
     useEffect(() => {
-        const saved = sessionStorage.getItem('athera_unlocked');
-        if (saved === 'true') setUnlocked(true);
-        setChecking(false);
+        const unlocked = sessionStorage.getItem('unlocked')
+        if (unlocked === 'true') setUnlocked(true)
+    }, [])
 
-        // 8.5s fallback timeout (8s video + 0.5s buffer)
-        const timeout = setTimeout(() => {
-            setVideoEnded(true);
-        }, 8500);
-        return () => clearTimeout(timeout);
-    }, []);
+    useEffect(() => {
+        const timeout = setTimeout(() => setVideoEnded(true), 8500)
+        return () => clearTimeout(timeout)
+    }, [])
 
     const handleSubmit = () => {
-        if (input === 'VortexiumX7') {
-            sessionStorage.setItem('athera_unlocked', 'true');
-            setUnlocked(true);
+        if (password === 'VortexiumX7') {
+            sessionStorage.setItem('unlocked', 'true')
+            setUnlocked(true)
         } else {
-            setError(true);
-            setShake(true);
-            setInput('');
-            setTimeout(() => setShake(false), 600);
-            setTimeout(() => setError(false), 2000);
+            setError(true)
+            setShake(true)
+            setTimeout(() => setShake(false), 600)
         }
-    };
+    }
 
-    const handleKey = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') handleSubmit();
-    };
-
-    if (checking) return null;
-    if (unlocked) return <>{children}</>;
+    if (unlocked) return <>{children}</>
 
     return (
-        <div style={{ background: '#000000', position: 'fixed', inset: 0, zIndex: 99999 }}>
-            <style>{`
-                .gate-input:focus { outline:none; border-color:rgba(255,255,255,0.4) !important; }
-                .gate-input::placeholder { color:rgba(255,255,255,0.2); }
-                .gate-btn:hover { background:rgba(255,255,255,0.1) !important; color:#fff !important; }
-                @keyframes shake {
-                  0%, 100% { transform: translateX(0); }
-                  20% { transform: translateX(-10px); }
-                  40% { transform: translateX(10px); }
-                  60% { transform: translateX(-8px); }
-                  80% { transform: translateX(8px); }
-                }
-            `}</style>
+        <div style={{ position: 'fixed', inset: 0, background: '#000', overflow: 'hidden', zIndex: 99999 }}>
 
-            {/* Cinematic Video Background */}
             <video
-                ref={videoRef}
                 autoPlay
                 muted
                 playsInline
+                poster="/images/nun-poster.jpeg"
                 onEnded={() => setVideoEnded(true)}
                 onTimeUpdate={(e) => {
                     const t = (e.target as HTMLVideoElement).currentTime
                     if (t >= 3.5 && !showTitle) {
                         setShowTitle(true)
-                        setTimeout(() => setHideTitle(true), 1500)
+                        setTimeout(() => setHideTitle(true), 1800)
+                    }
+                    if (t >= 6.5 && !showFinal) {
+                        setShowFinal(true)
                     }
                 }}
                 style={{
                     position: 'fixed',
-                    top: 0,
-                    left: 0,
+                    top: 0, left: 0,
                     width: '100%',
-                    height: '100%',
+                    height: '110%',        // ← extra 10% height pushes bottom out of view
                     objectFit: 'cover',
+                    objectPosition: 'center top',   // ← anchors top, bottom gets cropped
                     zIndex: 0,
                 }}
             >
                 <source src="/videos/nun-walking.mp4" type="video/mp4" />
             </video>
 
-            {/* Cinematic Title Card */}
+            {/* DARK OVERLAY */}
+            <div style={{
+                position: 'fixed', inset: 0,
+                background: 'rgba(0,0,0,0.45)',
+                zIndex: 1,
+            }} />
+
+            {/* GOLD ATHERA LABS TITLE — stays whole video, fades out when password UI appears */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: videoEnded ? 0 : 1 }}
+                transition={{ duration: 0.8 }}
+                style={{
+                    position: 'fixed',
+                    inset: 0,
+                    zIndex: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    pointerEvents: 'none',
+                    gap: '0.5vw',
+                }}
+            >
+                {/* ATHERA LABS big gold */}
+                <motion.h1
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4, duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    style={{
+                        fontFamily: 'Cormorant Garamond, serif',
+                        fontSize: 'clamp(60px, 9vw, 140px)',
+                        fontWeight: 700,
+                        letterSpacing: '0.15em',
+                        textTransform: 'uppercase',
+                        lineHeight: 0.9,
+                        background: 'linear-gradient(180deg, #d4a843 0%, #f5d57a 35%, #8b6914 60%, #c9952a 80%, #f5d57a 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                        margin: 0,
+                        textAlign: 'center',
+                        filter: 'drop-shadow(0 0 40px rgba(180,120,20,0.6))',
+                    }}
+                >
+                    ATHERA LABS
+                </motion.h1>
+
+                {/* Gold rule */}
+                <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: '30vw' }}
+                    transition={{ delay: 0.9, duration: 0.8 }}
+                    style={{
+                        height: '1px',
+                        background: 'linear-gradient(90deg, transparent, #c9952a, transparent)',
+                        margin: '1vw 0',
+                    }}
+                />
+
+                {/* Description */}
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.1, duration: 1 }}
+                    style={{
+                        fontFamily: 'Cormorant Garamond, serif',
+                        fontSize: 'clamp(12px, 1.1vw, 18px)',
+                        fontWeight: 300,
+                        fontStyle: 'italic',
+                        letterSpacing: '0.2em',
+                        textTransform: 'uppercase',
+                        background: 'linear-gradient(180deg, #c9952a, #f5d57a)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                        margin: 0,
+                        textAlign: 'center',
+                        filter: 'drop-shadow(0 0 15px rgba(180,120,20,0.4))',
+                    }}
+                >
+                    Building Intelligent Products for the Future.
+                </motion.p>
+            </motion.div>
+
+            {/* SHE IS COMING — at 3.5s, lower center */}
             <AnimatePresence>
                 {showTitle && !hideTitle && (
                     <motion.div
-                        key="title"
+                        key="she-is-coming"
                         initial={{ opacity: 0, letterSpacing: '0.8em' }}
-                        animate={{ opacity: 1, letterSpacing: '0.15em' }}
+                        animate={{ opacity: 1, letterSpacing: '0.12em' }}
                         exit={{ opacity: 0, letterSpacing: '0.5em' }}
-                        transition={{ duration: 0.6, ease: 'easeOut' }}
+                        transition={{ duration: 0.7, ease: 'easeOut' }}
                         style={{
                             position: 'fixed',
                             inset: 0,
-                            zIndex: 2,
+                            zIndex: 3,
                             display: 'flex',
-                            alignItems: 'center',
+                            alignItems: 'flex-end',
                             justifyContent: 'center',
+                            paddingBottom: '22vh',
                             pointerEvents: 'none',
                         }}
                     >
                         <p style={{
                             fontFamily: 'Cormorant Garamond, serif',
-                            fontSize: '7vw',
+                            fontSize: 'clamp(40px, 6vw, 96px)',
                             fontWeight: 300,
                             fontStyle: 'italic',
                             color: 'rgba(255,255,255,0.92)',
-                            letterSpacing: '0.15em',
-                            textTransform: 'uppercase',
+                            letterSpacing: '0.12em',
                             margin: 0,
                             textAlign: 'center',
-                            lineHeight: 1,
+                            textShadow: '0 0 60px rgba(255,255,255,0.15)',
                         }}>
                             She is Coming.
                         </p>
@@ -123,185 +190,167 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
                 )}
             </AnimatePresence>
 
-            {/* Initial Dark Overlay */}
-            <div style={{
-                position: 'fixed',
-                inset: 0,
-                background: 'rgba(0,0,0,0.45)',
-                zIndex: 1,
-            }} />
+            {/* PROVE YOU BELONG — at 6.5s, bottom center */}
+            <AnimatePresence>
+                {showFinal && !videoEnded && (
+                    <motion.div
+                        key="prove"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.8 }}
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            zIndex: 3,
+                            display: 'flex',
+                            alignItems: 'flex-end',
+                            justifyContent: 'center',
+                            paddingBottom: '24vh',
+                            pointerEvents: 'none',
+                        }}
+                    >
+                        <p style={{
+                            fontFamily: 'Cormorant Garamond, serif',
+                            fontSize: 'clamp(30px, 4.5vw, 72px)',
+                            fontWeight: 300,
+                            fontStyle: 'italic',
+                            color: 'rgba(255,255,255,0.85)',
+                            letterSpacing: '0.1em',
+                            margin: 0,
+                            textAlign: 'center',
+                            textShadow: '0 0 40px rgba(255,255,255,0.1)',
+                        }}>
+                            Prove you belong.
+                        </p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-            {/* Post-Video Fade Overlay */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: videoEnded ? 1 : 0 }}
-                transition={{ duration: 1.2, ease: 'easeInOut' }}
-                style={{
-                    position: 'fixed',
-                    inset: 0,
-                    background: 'rgba(0,0,0,0.55)',
-                    zIndex: 2,
-                    pointerEvents: 'none',
-                }}
-            />
-
-            {/* Password UI Overlay */}
+            {/* PASSWORD UI — fades in when video ends */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: videoEnded ? 1 : 0, y: videoEnded ? 0 : 20 }}
-                transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
+                transition={{ duration: 1, delay: 0.3 }}
                 style={{
                     position: 'fixed',
                     bottom: '6vh',
-                    left: '0',
-                    right: '0',
-                    zIndex: 3,
+                    left: 0,
+                    right: 0,
+                    zIndex: 4,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: '1.5vw',
-                    pointerEvents: videoEnded ? 'all' : 'none',
+                    gap: '1vw',
+                    pointerEvents: videoEnded ? 'auto' : 'none',
                 }}
             >
-                {/* Logo + Brand Block */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8vw' }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ opacity: 0.8 }}>
-                        <path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z" fill="white" />
-                    </svg>
-                    <p style={{
-                        fontFamily: 'DM Sans, sans-serif',
-                        fontSize: '1.2vw',
-                        fontWeight: 900,
-                        color: '#fff',
-                        letterSpacing: '0.4em',
-                        textTransform: 'uppercase',
-                        margin: 0,
-                    }}>
-                        ATHERA LABS
-                    </p>
-                </div>
+                {/* Eagle logo */}
+                <img
+                    src="/images/eagle-logo.png"
+                    alt="Athera Labs"
+                    style={{
+                        width: '3vw',
+                        height: '3vw',
+                        objectFit: 'contain',
+                        mixBlendMode: 'screen',
+                        opacity: 0.9,
+                    }}
+                />
 
-                {/* Input Field and Enter Button */}
-                <div style={{
-                    display: 'flex',
-                    width: '28vw',
-                    animation: shake ? 'shake 0.6s ease' : 'none'
+                {/* ATHERA LABS */}
+                <p style={{
+                    fontFamily: 'DM Sans, sans-serif',
+                    fontSize: 'clamp(10px, 0.8vw, 14px)',
+                    fontWeight: 700,
+                    color: 'rgba(255,255,255,0.85)',
+                    letterSpacing: '0.4em',
+                    margin: 0,
                 }}>
+                    ATHERA LABS
+                </p>
+
+                {/* Password input row */}
+                <motion.div
+                    animate={shake ? { x: [-8, 8, -8, 8, 0] } : {}}
+                    transition={{ duration: 0.4 }}
+                    style={{ display: 'flex', gap: '0', alignItems: 'center' }}
+                >
                     <input
-                        className="gate-input"
                         type="password"
                         placeholder="ACCESS CODE"
-                        value={input}
-                        onChange={e => setInput(e.target.value)}
-                        onKeyDown={handleKey}
+                        value={password}
+                        onChange={(e) => { setPassword(e.target.value); setError(false) }}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                         style={{
-                            flex: 1,
-                            background: 'rgba(255,255,255,0.03)',
-                            border: `1px solid ${error ? 'rgba(255,80,80,0.4)' : 'rgba(255,255,255,0.08)'}`,
+                            background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(255,255,255,0.15)',
                             borderRight: 'none',
-                            padding: '0.9vw 1.2vw',
                             color: '#fff',
                             fontFamily: 'DM Mono, monospace',
-                            fontSize: '0.65vw',
+                            fontSize: '0.7vw',
                             letterSpacing: '0.2em',
-                            borderRadius: '0',
-                            transition: 'all 0.2s',
+                            padding: '0.8vw 1.5vw',
+                            outline: 'none',
+                            width: 'clamp(200px, 18vw, 320px)',
+                            caretColor: '#fff',
                         }}
                     />
                     <button
-                        className="gate-btn"
                         onClick={handleSubmit}
                         style={{
-                            background: 'rgba(255,255,255,0.06)',
-                            border: `1px solid ${error ? 'rgba(255,80,80,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                            color: 'rgba(255,255,255,0.5)',
+                            background: 'rgba(255,255,255,0.1)',
+                            border: '1px solid rgba(255,255,255,0.15)',
+                            color: '#fff',
                             fontFamily: 'DM Mono, monospace',
-                            fontSize: '0.55vw',
-                            letterSpacing: '0.3em',
-                            textTransform: 'uppercase',
-                            padding: '0 2vw',
+                            fontSize: '0.7vw',
+                            letterSpacing: '0.2em',
+                            padding: '0.8vw 1.5vw',
                             cursor: 'pointer',
-                            borderRadius: '0',
-                            transition: 'all 0.2s',
+                            transition: 'background 0.2s',
                         }}
                     >
                         ACCESS
                     </button>
-                </div>
+                </motion.div>
 
-                {/* Status Message */}
-                <div style={{ minHeight: '1vw' }}>
-                    {error && (
-                        <p style={{
-                            fontFamily: 'DM Mono, monospace',
-                            fontSize: '0.5vw',
-                            color: 'rgba(255,80,80,0.8)',
-                            letterSpacing: '0.2em',
-                            textTransform: 'uppercase',
-                            margin: 0,
-                        }}>
-                            INVALID ACCESS CODE — ATTEMPT LOGGED
-                        </p>
-                    )}
-                    {!error && (
-                        <p style={{
-                            fontFamily: 'DM Mono, monospace',
-                            fontSize: '0.5vw',
-                            color: 'rgba(255,255,255,0.2)',
-                            letterSpacing: '0.25em',
-                            textTransform: 'uppercase',
-                            margin: 0,
-                        }}>
-                            SECURED ENTRY POINT
-                        </p>
-                    )}
-                </div>
+                {/* ACCESS DENIED */}
+                {error && (
+                    <p style={{
+                        fontFamily: 'DM Mono, monospace',
+                        fontSize: '0.6vw',
+                        color: 'rgba(255,80,80,0.9)',
+                        letterSpacing: '0.2em',
+                        margin: 0,
+                    }}>
+                        ACCESS DENIED
+                    </p>
+                )}
             </motion.div>
 
-            {/* Bottom Left Label */}
+            {/* BOTTOM LEFT + RIGHT LABELS */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: videoEnded ? 1 : 0 }}
                 transition={{ duration: 1, delay: 0.5 }}
-                style={{
-                    position: 'absolute',
-                    bottom: '2.5vw',
-                    left: '3vw',
-                    zIndex: 4,
-                }}
+                style={{ position: 'fixed', bottom: '2vh', left: '2vw', zIndex: 4 }}
             >
-                <p style={{
-                    fontFamily: 'DM Mono, monospace',
-                    fontSize: '0.5vw',
-                    color: 'rgba(255,255,255,0.2)',
-                    letterSpacing: '0.25em',
-                    textTransform: 'uppercase',
-                    margin: 0,
-                }}>ATHERA LABS · 2026 · STEALTH MODE</p>
+                <p style={{ fontFamily: 'DM Mono, monospace', fontSize: 'clamp(8px, 0.55vw, 11px)', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.2em', margin: 0 }}>
+                    ATHERA LABS · 2026 · STEALTH MODE
+                </p>
             </motion.div>
 
-            {/* Bottom Right Label */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: videoEnded ? 1 : 0 }}
                 transition={{ duration: 1, delay: 0.5 }}
-                style={{
-                    position: 'absolute',
-                    bottom: '2.5vw',
-                    right: '3vw',
-                    zIndex: 4,
-                }}
+                style={{ position: 'fixed', bottom: '2vh', right: '2vw', zIndex: 4 }}
             >
-                <p style={{
-                    fontFamily: 'DM Mono, monospace',
-                    fontSize: '0.5vw',
-                    color: 'rgba(255,255,255,0.2)',
-                    letterSpacing: '0.25em',
-                    textTransform: 'uppercase',
-                    margin: 0,
-                }}>BUILDING INTELLIGENT PRODUCTS</p>
+                <p style={{ fontFamily: 'DM Mono, monospace', fontSize: 'clamp(8px, 0.55vw, 11px)', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.2em', margin: 0 }}>
+                    BUILDING INTELLIGENT PRODUCTS
+                </p>
             </motion.div>
 
         </div>
-    );
+    )
 }

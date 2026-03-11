@@ -58,7 +58,7 @@ export function Navigation() {
                     src="/images/eagle-logo.png"
                     alt="Athera Labs"
                     style={{
-                      width: '1.6vw',
+                      width: '2.6vw',
                       height: 'auto',
                       mixBlendMode: 'screen',
                       filter: 'brightness(1.2)',

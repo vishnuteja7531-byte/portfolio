@@ -223,7 +223,7 @@ export function Footer() {
           color: 'rgba(255,255,255,0.15)',
           letterSpacing: '0.2em',
           margin: 0
-        }}>© 2025 Athera Labs. All rights reserved.</p>
+        }}>© 2026 Athera Labs. All rights reserved.</p>
         <p style={{
           fontFamily: 'IBM Plex Mono',
           fontSize: '0.55vw',

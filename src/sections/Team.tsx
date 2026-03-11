@@ -6,58 +6,44 @@ import type { Variants, Easing } from 'framer-motion';
 
 const team = [
     {
-        id: 'vishnu',
-        num: '01',
-        name: 'VISHNU',
-        role: 'Founder & Lead Dev',
-        stack: 'Next.js · Python · AI · React',
-        image: '/images/ceo.png',
-        badge: 'FOUNDER · 01',
-        featured: true,
-    },
-    {
         id: 'akhil',
-        num: '02',
         name: 'AKHIL',
         role: 'Backend Engineer',
         stack: 'Node.js · PostgreSQL · Redis',
         image: '/images/person2.png',
-        featured: false,
+        description: "He doesn't write code. He writes infrastructure. The kind that doesn't break at 3AM when everything matters. Every API, every database, every silent system running beneath the surface — that's Akhil's architecture holding it all together.",
     },
     {
         id: 'sanjay',
-        num: '03',
         name: 'SANJAY',
         role: 'UI/UX Designer',
         stack: 'Figma · Framer · CSS',
         image: '/images/person4.png',
-        featured: false,
+        description: "He sees what others skip. The 2px that makes something feel right. The pause before an animation that makes it feel alive. Sanjay doesn't design interfaces — he designs the feeling of using them.",
     },
     {
         id: 'neha',
-        num: '04',
         name: 'NEHA',
         role: 'Mobile Developer',
         stack: 'Flutter · Dart · Firebase',
         image: '/images/person1.png',
-        featured: false,
+        description: "She builds for the hand, the thumb, the split-second decision. Every screen Neha ships is a product people carry in their pocket and trust with their time. Flutter is her language. Precision is her standard.",
     },
     {
         id: 'priya',
-        num: '05',
         name: 'PRIYA',
         role: 'AI & Research',
         stack: 'Python · LLMs · HuggingFace',
         image: '/images/person3.png',
-        featured: false,
+        description: "She reads papers the way others read news. Priya is the mind behind our models — training, refining, pushing LLMs past their defaults. Where the rest of us build products, she builds the intelligence inside them.",
     },
 ];
 
 const figureVariants: Variants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 45 },
     visible: (i: number) => ({
         opacity: 1, y: 0,
-        transition: { delay: i * 0.1, duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] as Easing }
+        transition: { delay: i * 0.12, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as Easing }
     })
 };
 
@@ -69,21 +55,18 @@ export default function Team() {
     return (
         <section ref={ref} style={{ background: '#f0eeea', padding: '6vw 4vw 4vw', overflow: 'hidden' }}>
 
-            {/* PART 1 — TOP SPLIT */}
-            <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: '0' }}>
+            {/* ── PART 1: TOP SPLIT ── */}
+            <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: '5vw' }}>
 
-                {/* LEFT — Text content */}
-                <div style={{ flex: '0 0 60%', paddingRight: '4vw' }}>
-
-                    {/* Label */}
+                {/* LEFT */}
+                <div style={{ flex: '0 0 55%', paddingRight: '4vw' }}>
                     <motion.p
                         initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ duration: 0.6 }}
-                        style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.65vw', letterSpacing: '0.3em', color: 'rgba(10,10,10,0.4)', marginBottom: '2vw' }}
+                        style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.65vw', letterSpacing: '0.3em', color: 'rgba(10,10,10,0.4)', margin: '0 0 2vw 0' }}
                     >
                         THE BUILDERS
                     </motion.p>
 
-                    {/* Big headline */}
                     {['ATHERA LABS', 'IS MORE THAN', 'JUST CODE.'].map((line, i) => (
                         <motion.h2
                             key={line}
@@ -93,7 +76,7 @@ export default function Team() {
                             style={{
                                 fontFamily: i === 2 ? 'Cormorant Garamond, serif' : 'DM Sans, sans-serif',
                                 fontStyle: i === 2 ? 'italic' : 'normal',
-                                fontSize: '7vw',
+                                fontSize: '7.5vw',
                                 fontWeight: i === 2 ? 400 : 900,
                                 lineHeight: 0.88,
                                 color: '#0a0a0a',
@@ -104,20 +87,15 @@ export default function Team() {
                         </motion.h2>
                     ))}
 
-                    {/* Description */}
                     <motion.p
                         initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.55 }}
-                        style={{
-                            fontFamily: 'DM Mono, monospace', fontSize: '0.85vw', color: 'rgba(10,10,10,0.55)',
-                            lineHeight: 1.7, maxWidth: '38vw', marginTop: '2.5vw'
-                        }}
+                        style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.82vw', color: 'rgba(10,10,10,0.55)', lineHeight: 1.75, maxWidth: '36vw', margin: '2.5vw 0 0 0' }}
                     >
                         We are a stealth-mode collective of builders, researchers, and designers
                         operating at the edge of AI and product design. Every product we ship
                         is engineered to think, adapt, and create value before the market asks for it.
                     </motion.p>
 
-                    {/* Button */}
                     <motion.button
                         initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.7 }}
                         style={{
@@ -126,37 +104,38 @@ export default function Team() {
                             background: 'transparent', color: '#0a0a0a', cursor: 'pointer',
                             letterSpacing: '0.1em', transition: 'all 0.25s ease',
                         }}
-                        onMouseEnter={e => { (e.target as HTMLElement).style.background = '#0a0a0a'; (e.target as HTMLElement).style.color = '#f0eeea' }}
-                        onMouseLeave={e => { (e.target as HTMLElement).style.background = 'transparent'; (e.target as HTMLElement).style.color = '#0a0a0a' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#0a0a0a'; (e.currentTarget as HTMLElement).style.color = '#f0eeea' }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#0a0a0a' }}
                     >
                         MEET THE TEAM →
                     </motion.button>
                 </div>
 
-                {/* RIGHT — Featured Vishnu figure */}
-                <div style={{ flex: '0 0 40%', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
-                    <div style={{ position: 'absolute', top: '1vw', left: '1vw', zIndex: 2, border: '1px solid rgba(10,10,10,0.25)', padding: '0.3vw 0.8vw' }}>
+                {/* RIGHT — CEO */}
+                <div style={{ flex: '0 0 45%', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
+                    <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 2, border: '1px solid rgba(10,10,10,0.25)', padding: '0.3vw 0.8vw' }}>
                         <span style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.55vw', color: 'rgba(10,10,10,0.5)', letterSpacing: '0.15em' }}>FOUNDER · 01</span>
                     </div>
                     <motion.div
                         initial={{ opacity: 0, y: 60 }}
                         animate={inView ? { opacity: 1, y: 0 } : {}}
                         transition={{ delay: 0.3, duration: 0.9 }}
-                        style={{ position: 'relative', width: '100%', height: '55vw', maxHeight: '650px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}
+                        style={{ position: 'relative', width: '100%', height: '58vw', maxHeight: '680px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}
                     >
                         <img src="/images/ceo.png" alt="Vishnu" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'bottom center' }} />
                     </motion.div>
                 </div>
             </div>
 
-            {/* PART 2 — DIVIDER RULE */}
+            {/* ── DIVIDER ── */}
             <motion.div
-                initial={{ width: 0 }} animate={inView ? { width: '100%' } : {}} transition={{ duration: 1, ease: 'easeInOut', delay: 0.2 }}
-                style={{ height: '1px', background: 'rgba(10,10,10,0.12)', margin: '4vw 0 0' }}
+                initial={{ width: 0 }} animate={inView ? { width: '100%' } : {}}
+                transition={{ duration: 1.1, ease: 'easeInOut', delay: 0.2 }}
+                style={{ height: '1px', background: 'rgba(10,10,10,0.12)', marginBottom: '0' }}
             />
 
-            {/* PART 3 — BOTTOM FIGURE STRIP */}
-            <div style={{ display: 'flex', alignItems: 'flex-end', width: '100%' }}>
+            {/* ── PART 2: 4-MEMBER STRIP ── */}
+            <div style={{ display: 'flex', alignItems: 'flex-end', width: '100%', background: '#f0eeea' }}>
                 {team.map((member, i) => (
                     <motion.div
                         key={member.id}
@@ -171,21 +150,15 @@ export default function Team() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            position: 'relative',
                             borderRight: i < team.length - 1 ? '1px solid rgba(10,10,10,0.1)' : 'none',
-                            padding: '0 1vw',
+                            padding: '0 1.5vw',
                             opacity: hoveredId && hoveredId !== member.id ? 0.35 : 1,
                             transition: 'opacity 0.3s ease',
                             cursor: 'default',
                         }}
                     >
-                        {/* Number */}
-                        <p style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.55vw', color: 'rgba(10,10,10,0.3)', alignSelf: 'flex-start', marginBottom: '0.5vw' }}>
-                            {member.num}
-                        </p>
-
                         {/* Figure */}
-                        <div style={{ position: 'relative', width: '100%', height: '42vw', maxHeight: '520px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+                        <div style={{ position: 'relative', width: '100%', height: '46vw', maxHeight: '560px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
                             <img
                                 src={member.image}
                                 alt={member.name}
@@ -201,26 +174,42 @@ export default function Team() {
                             />
                         </div>
 
-                        {/* Rule */}
+                        {/* Baseline rule */}
                         <div style={{ width: '100%', height: '1px', background: 'rgba(10,10,10,0.12)' }} />
 
-                        {/* Labels */}
-                        <div style={{ padding: '1vw 0 1.5vw', textAlign: 'center' }}>
-                            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '1vw', fontWeight: 700, color: '#0a0a0a', margin: '0 0 0.3vw', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                        {/* Text */}
+                        <div style={{ padding: '1.2vw 0.5vw 2.5vw', textAlign: 'center' }}>
+                            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '1.1vw', fontWeight: 700, color: '#0a0a0a', margin: '0 0 0.3vw', letterSpacing: '0.05em' }}>
                                 {member.name}
                             </p>
-                            <p style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.6vw', color: 'rgba(10,10,10,0.45)', margin: '0 0 0.35vw' }}>
+                            <p style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.62vw', color: 'rgba(10,10,10,0.45)', margin: '0 0 0.4vw' }}>
                                 {member.role}
                             </p>
-                            <p style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.52vw', color: 'rgba(10,10,10,0.28)', margin: 0 }}>
+                            <p style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.52vw', color: 'rgba(10,10,10,0.28)', margin: '0 0 1.2vw' }}>
                                 {member.stack}
                             </p>
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                animate={inView ? { opacity: 1 } : {}}
+                                transition={{ delay: i * 0.12 + 0.3 }}
+                                style={{
+                                    fontFamily: 'DM Mono, monospace',
+                                    fontSize: '0.65vw',
+                                    color: 'rgba(10,10,10,0.5)',
+                                    lineHeight: 1.75,
+                                    maxWidth: '18vw',
+                                    margin: '0 auto',
+                                    fontStyle: 'normal',
+                                }}
+                            >
+                                {member.description}
+                            </motion.p>
                         </div>
                     </motion.div>
                 ))}
             </div>
 
-            {/* PART 4 — BOTTOM BAR */}
+            {/* ── BOTTOM BAR ── */}
             <div style={{ borderTop: '1px solid rgba(10,10,10,0.1)', marginTop: '2vw', paddingTop: '1.5vw', display: 'flex', justifyContent: 'space-between' }}>
                 <p style={{ fontFamily: 'DM Mono, monospace', fontSize: '0.6vw', color: 'rgba(10,10,10,0.25)', letterSpacing: '0.15em', margin: 0 }}>
                     ATHERA LABS · STEALTH MODE · 2026
@@ -231,5 +220,5 @@ export default function Team() {
             </div>
 
         </section>
-    );
+    )
 }

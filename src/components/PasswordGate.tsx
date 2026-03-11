@@ -1,6 +1,4 @@
-'use client'
-
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function PasswordGate({ children }: { children: React.ReactNode }) {
@@ -12,10 +10,20 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
     const [showTitle, setShowTitle] = useState(false)
     const [hideTitle, setHideTitle] = useState(false)
     const [showFinal, setShowFinal] = useState(false)
+    const [videoReady, setVideoReady] = useState(false)
+    const videoRef = useRef<HTMLVideoElement>(null)
 
     useEffect(() => {
         const unlocked = sessionStorage.getItem('unlocked')
         if (unlocked === 'true') setUnlocked(true)
+    }, [])
+
+    useEffect(() => {
+        const fallback = setTimeout(() => {
+            setVideoReady(true)
+            videoRef.current?.play()
+        }, 8000)
+        return () => clearTimeout(fallback)
     }, [])
 
     useEffect(() => {
@@ -39,11 +47,98 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
     return (
         <div style={{ position: 'fixed', inset: 0, background: '#000', overflow: 'hidden', zIndex: 99999 }}>
 
+            <AnimatePresence>
+                {!videoReady && (
+                    <motion.div
+                        key="loading"
+                        initial={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.8 }}
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            background: '#0a0a0a',
+                            zIndex: 10,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '2vw',
+                        }}
+                    >
+                        {/* Eagle logo pulsing */}
+                        <motion.img
+                            src="/images/eagle-logo.png"
+                            alt="Athera Labs"
+                            animate={{ opacity: [0.4, 1, 0.4] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                            style={{
+                                width: '4vw',
+                                height: '4vw',
+                                objectFit: 'contain',
+                                mixBlendMode: 'screen',
+                            }}
+                        />
+
+                        {/* ATHERA LABS */}
+                        <p style={{
+                            fontFamily: 'DM Sans, sans-serif',
+                            fontSize: 'clamp(10px, 0.8vw, 14px)',
+                            fontWeight: 700,
+                            color: 'rgba(255,255,255,0.85)',
+                            letterSpacing: '0.4em',
+                            margin: 0,
+                            textTransform: 'uppercase',
+                        }}>
+                            ATHERA LABS
+                        </p>
+
+                        {/* Thin animated progress line */}
+                        <div style={{
+                            width: '20vw',
+                            height: '1px',
+                            background: 'rgba(255,255,255,0.1)',
+                            position: 'relative',
+                            overflow: 'hidden',
+                        }}>
+                            <motion.div
+                                animate={{ x: ['-100%', '100%'] }}
+                                transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
+                                style={{
+                                    position: 'absolute',
+                                    top: 0, left: 0,
+                                    width: '50%',
+                                    height: '100%',
+                                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+                                }}
+                            />
+                        </div>
+
+                        {/* Loading text */}
+                        <p style={{
+                            fontFamily: 'DM Mono, monospace',
+                            fontSize: 'clamp(8px, 0.6vw, 11px)',
+                            color: 'rgba(255,255,255,0.25)',
+                            letterSpacing: '0.3em',
+                            margin: 0,
+                            textTransform: 'uppercase',
+                        }}>
+                            Loading Experience...
+                        </p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <video
-                autoPlay
+                ref={videoRef}
+                autoPlay={false}
                 muted
                 playsInline
                 poster="/images/nun-poster.jpeg"
+                onCanPlayThrough={() => {
+                    setVideoReady(true)
+                    videoRef.current?.play()
+                }}
                 onEnded={() => setVideoEnded(true)}
                 onTimeUpdate={(e) => {
                     const t = (e.target as HTMLVideoElement).currentTime
@@ -59,10 +154,12 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
                     position: 'fixed',
                     top: 0, left: 0,
                     width: '100%',
-                    height: '110%',        // ← extra 10% height pushes bottom out of view
+                    height: '110%',
                     objectFit: 'cover',
-                    objectPosition: 'center top',   // ← anchors top, bottom gets cropped
+                    objectPosition: 'center top',
                     zIndex: 0,
+                    opacity: videoReady ? 1 : 0,
+                    transition: 'opacity 0.5s ease',
                 }}
             >
                 <source src="/videos/nun-walking.mp4" type="video/mp4" />

@@ -56,7 +56,7 @@ function TeamRow({ member, index }: { member: any; index: number }) {
             style={{
                 display: 'flex',
                 flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
-                minHeight: '90vh',
+                minHeight: member.id !== 'vishnu' ? '65vh' : '90vh',
                 borderBottom: '1px solid rgba(10,10,10,0.08)',
                 overflow: 'hidden',
             }}
@@ -73,8 +73,8 @@ function TeamRow({ member, index }: { member: any; index: number }) {
                     display: 'flex',
                     alignItems: 'flex-end',
                     justifyContent: 'center',
-                    height: member.id !== 'vishnu' ? '85vh' : 'auto',
-                    maxHeight: member.id !== 'vishnu' ? '85vh' : 'none',
+                    height: member.id !== 'vishnu' ? '65vh' : 'auto',
+                    maxHeight: member.id !== 'vishnu' ? '65vh' : 'none',
                     width: '100%',
                 }}
             >
@@ -84,8 +84,8 @@ function TeamRow({ member, index }: { member: any; index: number }) {
                     style={{
                         width: '100%',
                         height: '100%',
-                        objectFit: member.id !== 'vishnu' ? 'cover' : 'contain',
-                        objectPosition: member.id !== 'vishnu' ? 'center top' : 'bottom center',
+                        objectFit: member.id === 'neha' ? 'cover' : 'contain',
+                        objectPosition: member.id === 'neha' ? 'center 8%' : (member.id === 'vishnu' ? 'bottom center' : 'center center'),
                     }}
                 />
             </motion.div>
@@ -96,7 +96,7 @@ function TeamRow({ member, index }: { member: any; index: number }) {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                padding: '5vw 5vw',
+                padding: member.id !== 'vishnu' ? '3vw 4vw' : '5vw 5vw',
                 position: 'relative',
             }}>
                 <motion.p
@@ -108,9 +108,9 @@ function TeamRow({ member, index }: { member: any; index: number }) {
                         fontSize: '0.62vw',
                         letterSpacing: '0.25em',
                         color: 'rgba(10,10,10,0.35)',
-                        marginBottom: '2vw',
+                        marginBottom: member.id !== 'vishnu' ? '1.2vw' : '2vw',
                         textTransform: 'uppercase',
-                        margin: '0 0 2vw 0'
+                        margin: member.id !== 'vishnu' ? `0 0 1.2vw 0` : '0 0 2vw 0'
                     }}
                 >
                     {member.role}
@@ -122,11 +122,11 @@ function TeamRow({ member, index }: { member: any; index: number }) {
                     transition={{ delay: 0.2, duration: 0.9 }}
                     style={{
                         fontFamily: 'DM Sans, sans-serif',
-                        fontSize: '10vw',
+                        fontSize: member.id !== 'vishnu' ? '7vw' : '10vw',
                         fontWeight: 900,
-                        lineHeight: 0.85,
+                        lineHeight: member.id !== 'vishnu' ? 0.88 : 0.85,
                         color: '#0a0a0a',
-                        margin: '0 0 2vw 0',
+                        margin: member.id !== 'vishnu' ? '0 0 1.5vw 0' : '0 0 2vw 0',
                         letterSpacing: '-0.03em',
                         textTransform: 'uppercase'
                     }}
@@ -138,7 +138,7 @@ function TeamRow({ member, index }: { member: any; index: number }) {
                     initial={{ width: 0 }}
                     animate={inView ? { width: '100%' } : {}}
                     transition={{ delay: 0.3, duration: 0.8 }}
-                    style={{ height: '1px', background: 'rgba(10,10,10,0.12)', marginBottom: '2vw' }}
+                    style={{ height: '1px', background: 'rgba(10,10,10,0.12)', marginBottom: member.id !== 'vishnu' ? '1.5vw' : '2vw' }}
                 />
 
                 <motion.p
@@ -147,10 +147,10 @@ function TeamRow({ member, index }: { member: any; index: number }) {
                     transition={{ delay: 0.4, duration: 0.9 }}
                     style={{
                         fontFamily: 'DM Mono, monospace',
-                        fontSize: '0.6vw',
+                        fontSize: member.id !== 'vishnu' ? '0.58vw' : '0.6vw',
                         color: 'rgba(10,10,10,0.28)',
                         letterSpacing: '0.1em',
-                        margin: '0 0 2.5vw 0',
+                        margin: member.id !== 'vishnu' ? '0 0 1.8vw 0' : '0 0 2.5vw 0',
                         textTransform: 'uppercase'
                     }}
                 >
@@ -163,12 +163,12 @@ function TeamRow({ member, index }: { member: any; index: number }) {
                     transition={{ delay: 0.4, duration: 0.9 }}
                     style={{
                         fontFamily: 'Cormorant Garamond, serif',
-                        fontSize: '1.6vw',
+                        fontSize: member.id !== 'vishnu' ? '1.1vw' : '1.6vw',
                         fontStyle: 'italic',
                         fontWeight: 400,
                         color: 'rgba(10,10,10,0.65)',
-                        lineHeight: 1.7,
-                        maxWidth: '38vw',
+                        lineHeight: member.id !== 'vishnu' ? 1.75 : 1.7,
+                        maxWidth: member.id !== 'vishnu' ? '36vw' : '38vw',
                         margin: 0
                     }}
                 >
